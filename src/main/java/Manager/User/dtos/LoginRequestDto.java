@@ -1,4 +1,4 @@
-package Manager.User.dto;
+package Manager.User.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -10,12 +10,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Data
-public class LoginRequestDTO {
+public class LoginRequestDto {
 
     @NotEmpty(message = "{login_username_not_empty}")
     private String username;
 
     @NotEmpty(message = "{login_password_not_empty}")
     private String password;
+
+    @NotEmpty(message = "{login_eamil_not_empty}")
+    private String email;
 
 }

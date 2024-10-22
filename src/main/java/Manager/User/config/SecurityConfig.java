@@ -1,36 +1,47 @@
 package Manager.User.config;
 
-import Manager.User.entity.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-
-import java.util.Date;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final SecurityConstants securityConstants;
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authorize) -> {
+//                    authorize.requestMatchers("/api/auth/signingoogle","/api/auth/profile").authenticated();
+//                    authorize.requestMatchers("/", "/error", "/webjars/**","/api/auth/**", "/oauth2/**").permitAll();
+//                    authorize.requestMatchers("/api/admin/**","/api/schedule/**","/api/account/**").hasAuthority("ADMIN");
+//                    authorize.requestMatchers("/api/user/**").hasAnyAuthority("EMPLOYEE","ADMIN");
+                    authorize.anyRequest().permitAll();
+                });
+//
 
-    public SecurityConfig(SecurityConstants securityConstants) {
-        this.securityConstants = securityConstants;
+        return http.build();
     }
 
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            Authentication auth) {
-        String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + securityConstants.getExpirationTime()))
-                .signWith(SignatureAlgorithm.HS512, securityConstants.getSecretKey())
-                .compact();
-        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(user);
     }
 
 }

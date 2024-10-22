@@ -1,8 +1,10 @@
 package Manager.User.controller;
 
-import Manager.User.entity.User;
-import Manager.User.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import Manager.User.dtos.UserRegistrationRequest;
+import Manager.User.model.User;
+import Manager.User.service.user.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +14,11 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/username/{username}")
     public User getUserByUsername(@PathVariable String username) {
@@ -41,6 +46,12 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping
+    public ResponseEntity<User> registrationRequest(@Valid @RequestBody UserRegistrationRequest registrationRequest) {
 
+        final User registrationResponse = userService.registration(registrationRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
+    }
 
 }
