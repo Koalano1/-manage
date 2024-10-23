@@ -1,14 +1,14 @@
 package usermanagement.service.user.impl;
 
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import usermanagement.dto.UserRegistrationRequest;
 import usermanagement.exception.NotFoundException;
-import usermanagement.exception.UnprocessableEntityException;
+import usermanagement.exception.UnauthorizedException;
 import usermanagement.mapper.UserMapper;
 import usermanagement.model.User;
 import usermanagement.repository.UserRepository;
@@ -20,29 +20,19 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
-    @Autowired
-    private final UserMapper userMapper;
+    UserMapper userMapper;
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("user not found"));
     }
 
-    @Override
-    public User registration(UserRegistrationRequest registrationRequest) {
-        if (userRepository.findByUsername(registrationRequest.getUsername()) != null) {
-            throw new UnprocessableEntityException("Username already exists");
-        }
-
-        User user = userMapper.toUser(registrationRequest);
-        return userRepository.save(user);
-    }
 
     @Override
     public List<User> findAllUsers() {
@@ -60,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
         if (user != null) {
             throw new NotFoundException("User not found");
         }
@@ -69,7 +59,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.save(user);
         } catch (OptimisticLockingFailureException e) {
-            throw new UnprocessableEntityException("User was updated by another user");
+            throw new UnauthorizedException("User was updated by another user");
         }
     }
 

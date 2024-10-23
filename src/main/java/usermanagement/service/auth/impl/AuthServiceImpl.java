@@ -1,39 +1,67 @@
 package usermanagement.service.auth.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import usermanagement.dto.LoginRequestDto;
 import usermanagement.dto.LoginResponseDto;
+import usermanagement.dto.UserRegistrationRequest;
+import usermanagement.dto.UserResponse;
 import usermanagement.exception.NotFoundException;
-import usermanagement.exception.UnprocessableEntityException;
+import usermanagement.exception.UnauthorizedException;
+import usermanagement.mapper.UserMapper;
 import usermanagement.model.User;
 import usermanagement.repository.UserRepository;
 import usermanagement.service.auth.AuthService;
-import usermanagement.util.JwtUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import usermanagement.service.jwt.JwtService;
+import usermanagement.service.user.impl.UserDetailsServiceImpl;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final JwtService jwtService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public LoginResponseDto authenticate(LoginRequestDto loginUserDto) {
-        User user = userRepository.findByEmail(loginUserDto.getEmail())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+    @Override
+    public LoginResponseDto authenticate(LoginRequestDto request) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 
-        boolean matches = passwordEncoder.matches(loginUserDto.getPassword(), user.getPassword());
+        boolean matches = passwordEncoder.matches(request.getPassword(), userDetails.getPassword());
         if (!matches) {
-            throw new UnprocessableEntityException("Password is incorrect");
+            throw new UnauthorizedException("Password is incorrect");
         }
 
-        String token = jwtUtils.generateJwtToken(user.getEmail());
+        String token = jwtService.generateToken(userDetails);
         return LoginResponseDto.builder()
                 .token(token)
                 .isAuthenticated(true)
                 .build();
+    }
+
+    @Override
+    public UserResponse register(UserRegistrationRequest registrationRequest) {
+        Optional<User> existingUserWithUsername = userRepository.findByUsername(registrationRequest.getUsername());
+
+        if (existingUserWithUsername.isPresent()) {
+            throw new NotFoundException("Username already exists");
+        }
+
+        User user = User.builder()
+                .email(registrationRequest.getEmail())
+                .username(registrationRequest.getUsername())
+                .password(passwordEncoder.encode(registrationRequest.getPassword()))
+                .build();
+
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
     }
 
 }

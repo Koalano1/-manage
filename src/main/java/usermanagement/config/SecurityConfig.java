@@ -17,6 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final String[] WHITELIST = {
+            "/api/users/create"
+    };
+
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
@@ -26,7 +31,9 @@ public class SecurityConfig {
 //                    authorize.requestMatchers("/", "/error", "/webjars/**","/api/auth/**", "/oauth2/**").permitAll();
 //                    authorize.requestMatchers("/api/admin/**","/api/schedule/**","/api/account/**").hasAuthority("ADMIN");
 //                    authorize.requestMatchers("/api/user/**").hasAnyAuthority("EMPLOYEE","ADMIN");
-                    authorize.anyRequest().permitAll();
+                    authorize
+                            .requestMatchers(WHITELIST).authenticated()
+                            .anyRequest().permitAll();
                 });
 //
 

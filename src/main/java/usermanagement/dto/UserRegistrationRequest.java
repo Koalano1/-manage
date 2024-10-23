@@ -1,8 +1,12 @@
 package usermanagement.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationRequest {
 
     private String username;

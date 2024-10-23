@@ -56,11 +56,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -120,23 +116,23 @@
 			<version>8.0.1.Final</version>
 		</dependency>
 		<!-- JSON Web Token Support -->
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> <!-- For Jackson deserialization support -->
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.jsonwebtoken</groupId>-->
+<!--			<artifactId>jjwt-api</artifactId>-->
+<!--			<version>0.12.6</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>io.jsonwebtoken</groupId>-->
+<!--			<artifactId>jjwt-impl</artifactId>-->
+<!--			<version>0.12.6</version>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>io.jsonwebtoken</groupId>-->
+<!--			<artifactId>jjwt-jackson</artifactId> &lt;!&ndash; For Jackson deserialization support &ndash;&gt;-->
+<!--			<version>0.12.6</version>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
 
 <!--		 https://mvnrepository.com/artifact/org.mapstruct/mapstruct-->
 		<dependency>
@@ -151,6 +147,13 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>1.6.2</version>
 		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.nimbusds</groupId>-->
+<!--			<artifactId>nimbus-jose-jwt</artifactId>-->
+<!--			<version>9.10.1</version>-->
+<!--		</dependency>-->
+
 	</dependencies>
 
 	<build>

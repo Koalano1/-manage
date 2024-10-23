@@ -8,3 +8,8 @@ spring:
     username: tranglhoc
     password: tranglhoc
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+security:
+  jwt:
+    secret-key: QgNIh6g6LRinhwhiRuo6pCVf5vJZyJ6T1NwcPKVBR4NZmIJ5rbQ+4a1pN+jVVISmPkxaBaEryX5XHGvqf+AcmPIzT47qGs8Ro2J9vJdBfoA=
+    expiration-time: 86400000

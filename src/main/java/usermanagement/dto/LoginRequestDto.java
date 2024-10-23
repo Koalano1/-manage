@@ -18,7 +18,4 @@ public class LoginRequestDto {
     @NotEmpty(message = "{login_password_not_empty}")
     private String password;
 
-    @NotEmpty(message = "{login_eamil_not_empty}")
-    private String email;
-
 }

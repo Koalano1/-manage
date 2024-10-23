@@ -1,8 +1,6 @@
 package usermanagement.service.user;
 
-import usermanagement.dto.UserRegistrationRequest;
 import usermanagement.model.User;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -17,7 +15,5 @@ public interface UserService {
     void deleteUser(Long id);
 
     User findByUsername(String username);
-
-    User registration(@Valid UserRegistrationRequest registrationRequest);
 
 }
