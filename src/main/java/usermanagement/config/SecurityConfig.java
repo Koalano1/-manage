@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import usermanagement.exception.CustomAuthenticationEntryPoint;
 
 
 @Configuration
@@ -23,9 +24,12 @@ public class SecurityConfig {
 
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
+    SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint entryPoint) throws Exception {
+        http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling((exceptionHandling) -> exceptionHandling
+                        .authenticationEntryPoint(entryPoint))
                 .authorizeHttpRequests((authorize) -> {
 //                    authorize.requestMatchers("/api/auth/signingoogle","/api/auth/profile").authenticated();
 //                    authorize.requestMatchers("/", "/error", "/webjars/**","/api/auth/**", "/oauth2/**").permitAll();
@@ -35,10 +39,12 @@ public class SecurityConfig {
                             .requestMatchers(WHITELIST).authenticated()
                             .anyRequest().permitAll();
                 });
+//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 //
 
         return http.build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
