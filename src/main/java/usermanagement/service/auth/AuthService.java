@@ -11,5 +11,6 @@ public interface AuthService {
     LoginResponseDto authenticate(LoginRequestDto request);
 
     UserResponse register(@Valid UserRegistrationRequest registrationRequest);
+    // Authentication getAuthentication();
 
 }

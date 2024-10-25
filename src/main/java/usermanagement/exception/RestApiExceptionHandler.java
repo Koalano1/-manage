@@ -46,14 +46,14 @@ public class RestApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<BaseErrorDto> handleUnauthorizedException(UnauthorizedException ex) {
-        BaseErrorDto error = BaseErrorDto.builder()
-                .timestamp(new Date())
-                .message(ex.getMessage())
-                .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
+//    @ExceptionHandler(UnauthorizedException.class)
+//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+//    public ResponseEntity<BaseErrorDto> handleUnauthorizedException(UnauthorizedException ex) {
+//        BaseErrorDto error = BaseErrorDto.builder()
+//                .timestamp(new Date())
+//                .message(ex.getMessage())
+//                .build();
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+//    }
 
 }

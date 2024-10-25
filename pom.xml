@@ -115,24 +115,6 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.1.Final</version>
 		</dependency>
-		<!-- JSON Web Token Support -->
-<!--		<dependency>-->
-<!--			<groupId>io.jsonwebtoken</groupId>-->
-<!--			<artifactId>jjwt-api</artifactId>-->
-<!--			<version>0.12.6</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>io.jsonwebtoken</groupId>-->
-<!--			<artifactId>jjwt-impl</artifactId>-->
-<!--			<version>0.12.6</version>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>io.jsonwebtoken</groupId>-->
-<!--			<artifactId>jjwt-jackson</artifactId> &lt;!&ndash; For Jackson deserialization support &ndash;&gt;-->
-<!--			<version>0.12.6</version>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
 
 <!--		 https://mvnrepository.com/artifact/org.mapstruct/mapstruct-->
 		<dependency>

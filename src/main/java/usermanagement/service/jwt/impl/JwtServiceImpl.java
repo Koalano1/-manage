@@ -25,6 +25,9 @@ public class JwtServiceImpl implements JwtService {
     @Value("${security.jwt.expiration-time}")
     private long expirationTime;
 
+    @Value("${security.jwt.refresh-token-expiration-time}")
+    private long refreshTokenExpirationTime;
+
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
@@ -35,6 +38,16 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS512, getSigningKey())
+                .compact();
+    }
+
+    @Override
+    public String generateRefreshToken(UserDetails userDetails) {
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationTime))
                 .signWith(SignatureAlgorithm.HS512, getSigningKey())
                 .compact();
     }

@@ -1,17 +1,15 @@
 package usermanagement.service.user.impl;
 
 import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import usermanagement.model.User;
-import usermanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import usermanagement.model.User;
+import usermanagement.repository.UserRepository;
 
 @Slf4j
 @Service
@@ -29,8 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                List.of()
-
+                user.getAuthorities()
         );
     }
 }

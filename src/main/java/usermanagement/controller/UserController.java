@@ -21,12 +21,13 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userService.findAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.findAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
@@ -41,5 +42,11 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserByJwt(@RequestHeader("Authorization") String jwt) {
+        return ResponseEntity.ok(userService.getUserByJwt(jwt));
+    }
+
 
 }
