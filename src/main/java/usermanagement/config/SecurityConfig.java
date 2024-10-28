@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
 //                    request.requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN");
                     request.requestMatchers(AUTHORIZED_ENDPOINTS).permitAll();
-                    request.anyRequest().authenticated();
+                    request.anyRequest().permitAll();
                 })
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint));
 //                .formLogin(Customizer.withDefaults());

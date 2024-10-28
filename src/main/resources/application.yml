@@ -9,8 +9,36 @@ spring:
     password: tranglhoc
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: ${email}
+    password: ${password}
+    port: '587'
+
 security:
   jwt:
     secret-key: QgNIh6g6LRinhwhiRuo6pCVf5vJZyJ6T1NwcPKVBR4NZmIJ5rbQ+4a1pN+jVVISmPkxaBaEryX5XHGvqf+AcmPIzT47qGs8Ro2J9vJdBfoA=
     refresh-token-expiration-time: 864000000
     expiration-time: 864000000
+
+#  kafka:
+#    bootstrap-servers: localhost:9092  # Kafka broker address
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      properties:
+#        spring.json.type.mapping: 'category:com.project.shopapp.models.Category'
+#    consumer:
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: '*'  # Allows deserialization of all packages
+#      group-id: my-consumer-group  # Consumer group ID
+#      auto-offset-reset: earliest  # Read from the beginning if no offset is found
+
